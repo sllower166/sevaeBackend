@@ -14,6 +14,7 @@ function initializeWebSocket(server) {
 
     socket.on("message", (message) => {
       try {
+        console.log(message);
         const jsonData = JSON.parse(message);
 
         if ("ping" in jsonData) {
