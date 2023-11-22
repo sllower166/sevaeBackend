@@ -3,7 +3,7 @@ const { processMsg } = require("./processMsg");
 const WS_PORT = process.env.WS_PORT || 6660;
 let io;
 function initializeWebSocket() {
-  io = new WebSocket.Server({ port: WS_PORT });
+  io = new WebSocket.Server({ autoAcceptConnections: false });
   console.log(io);
   io.on("connection", (socket) => {
     console.log("Cliente WebSocket conectado.");
