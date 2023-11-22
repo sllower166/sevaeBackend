@@ -1,8 +1,8 @@
+const WebSocket = require("ws");
 const { processMsg } = require("./processMsg");
 let wsServer; // Variable para el servidor WebSocket
 
 function initializeWebSocket(server) {
-  const WebSocket = require("ws");
   wsServer = new WebSocket.Server({ server });
 
   wsServer.on("connection", (socket) => {
