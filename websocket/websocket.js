@@ -1,8 +1,11 @@
-const WebSocket = require("ws");
 const { processMsg } = require("./processMsg");
+let wsServer; // Variable para el servidor WebSocket
 
-function initializeWebSocket(wss) {
-  wss.on("connection", (socket) => {
+function initializeWebSocket(server) {
+  const WebSocket = require("ws");
+  wsServer = new WebSocket.Server({ server });
+
+  wsServer.on("connection", (socket) => {
     console.log("Cliente WebSocket conectado.");
 
     let pingTimeout = setTimeout(() => {
@@ -15,7 +18,6 @@ function initializeWebSocket(wss) {
 
         if ("ping" in jsonData) {
           console.log("Recibido mensaje de ping.");
-
           clearTimeout(pingTimeout);
         } else if ("rfidData" in jsonData) {
           const uidFromReader = hexToString(jsonData.rfidData);
@@ -28,18 +30,22 @@ function initializeWebSocket(wss) {
       }
     });
 
-    socket.on("disconnect", () => {
+    socket.on("close", () => {
       console.log("Cliente WebSocket desconectado.");
     });
   });
 }
 
 function sendMessageToClients(message) {
-  wss.clients.forEach((client) => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(message);
-    }
-  });
+  if (wsServer) {
+    wsServer.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(message);
+      }
+    });
+  } else {
+    console.log("Error: Servidor WebSocket no inicializado");
+  }
 }
 
 function hexToString(hex) {

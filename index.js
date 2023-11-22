@@ -4,14 +4,11 @@ const { dbConnection } = require("./database/config");
 const { initializeWebSocket } = require("./websocket/websocket");
 const { startStudentsChanges } = require("./changeStream/estudentsChanges");
 const http = require("http");
-const WebSocket = require("ws");
 
 require("dotenv").config();
 const PORT = process.env.PORT;
 
 const app = express();
-const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
 
 require("./swaggerConfig")(app);
 
@@ -27,7 +24,8 @@ app.use("/api/directivo/", require("./routes/directivo"));
 app.use("/api/schoolparams/", require("./routes/schoolParams"));
 app.use("/api/reportes/", require("./routes/reportes"));
 
-initializeWebSocket(wss);
+const server = http.createServer(app);
+initializeWebSocket(server);
 startStudentsChanges();
 server.listen(PORT, () =>
   console.log(`Servidor corriendo http://localhost:${PORT}`)
