@@ -1,11 +1,8 @@
 const WebSocket = require("ws");
 const { processMsg } = require("./processMsg");
-let io;
-function initializeWebSocket() {
-  const WS_PORT = process.env.WS_PORT;
-  io = new WebSocket.Server({ port: WS_PORT });
-  console.log(io);
-  io.on("connection", (socket) => {
+
+function initializeWebSocket(wss) {
+  wss.on("connection", (socket) => {
     console.log("Cliente WebSocket conectado.");
 
     let pingTimeout = setTimeout(() => {
@@ -38,7 +35,7 @@ function initializeWebSocket() {
 }
 
 function sendMessageToClients(message) {
-  io.clients.forEach((client) => {
+  wss.clients.forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
       client.send(message);
     }
