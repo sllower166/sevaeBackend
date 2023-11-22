@@ -30,7 +30,7 @@ const notificarSmsRegistrosEstudiante = async (student, registro) => {
     const { tipo, fecha } = registro;
 
     const formattedDate = new Date(fecha);
-    formattedDate.setHours(formattedDate.getHours() + 5);
+    formattedDate.setHours(formattedDate.getHours());
 
     const formattedDateString = `${formattedDate.toLocaleDateString(
       "es-co"
