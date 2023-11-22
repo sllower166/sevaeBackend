@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const https = require("https");
 const { dbConnection } = require("./database/config");
 const { initializeWebSocket } = require("./websocket/websocket");
 const { startStudentsChanges } = require("./changeStream/estudentsChanges");
@@ -22,8 +23,10 @@ app.use("/api/directivo/", require("./routes/directivo"));
 app.use("/api/schoolparams/", require("./routes/schoolParams"));
 app.use("/api/reportes/", require("./routes/reportes"));
 
-initializeWebSocket();
+const sever = https.createServer(app);
+
+initializeWebSocket(sever);
 startStudentsChanges();
-app.listen(PORT, () =>
+sever.listen(PORT, () =>
   console.log(`Servidor corriendo http://localhost:${PORT}`)
 );
