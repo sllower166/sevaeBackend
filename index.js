@@ -1,12 +1,8 @@
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
 const { dbConnection } = require("./database/config");
-const http = require("http");
 const { initializeWebSocket } = require("./websocket/websocket");
 const { startStudentsChanges } = require("./changeStream/estudentsChanges");
-const { TextEncoder } = require("util");
-const utf8Encoder = new TextEncoder();
 
 require("dotenv").config();
 const PORT = process.env.PORT;
