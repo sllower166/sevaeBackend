@@ -4,7 +4,7 @@ const WS_PORT = process.env.WS_PORT || 6660;
 let io;
 function initializeWebSocket() {
   io = new WebSocket.Server({ port: WS_PORT });
-
+  console.log(io);
   io.on("connection", (socket) => {
     console.log("Cliente WebSocket conectado.");
 
