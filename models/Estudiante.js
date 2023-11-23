@@ -19,7 +19,7 @@ const RegistroSchema = new Schema({
   },
   tipo: {
     type: String,
-    enum: ["Ingreso", "Salida", "Fuera de horario"],
+    enum: ["Ingreso", "Salida", "Fuera de Horario"],
     required: true,
   },
   notificacion: Boolean,

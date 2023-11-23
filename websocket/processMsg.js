@@ -50,7 +50,7 @@ async function processMsg(nuip) {
     ) {
       nuevoRegistro.tipo = "Salida";
     } else {
-      nuevoRegistro.tipo = "Fuera de horario";
+      nuevoRegistro.tipo = "Fuera de Horario";
     }
 
     estudiante.registros.push(nuevoRegistro);
