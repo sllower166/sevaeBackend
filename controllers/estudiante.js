@@ -163,7 +163,7 @@ const crearCarnetEstudiante = async (req, res) => {
 const accesoManualEstudiante = async (req, res) => {
   try {
     const { estudianteId, tipoAcceso, motivo, usuarioID } = req.body;
-    const offset = -8 * 60 * 60 * 1000;
+    const offset = -5 * 60 * 60 * 1000;
 
     if (!estudianteId || !tipoAcceso) {
       return res.status(400).json({
