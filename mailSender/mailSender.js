@@ -31,7 +31,7 @@ async function notificarEmailRegistrosEstudiante(student, registro) {
     const { nombre, apellidos, acudientes } = student;
     const { tipo, fecha, usuario, motivo } = registro;
     const formattedDate = new Date(fecha);
-    formattedDate.setHours(formattedDate.getHours() + 2);
+    formattedDate.setHours(formattedDate.getHours());
 
     const formattedDateString = `${formattedDate.toLocaleDateString(
       "es-co"
