@@ -1,5 +1,5 @@
 const Estudiante = require("../models/Estudiante");
-const SchoolParams = require("../models/SchoolParams");
+const moment = require("moment-timezone");
 
 async function processMsg(nuip) {
   try {
@@ -11,8 +11,7 @@ async function processMsg(nuip) {
       return;
     }
 
-    const horaActual = new Date().getHours();
-    const offset = -8 * 60 * 60 * 1000;
+    const horaActual = moment().locale("es-co");
 
     const { horaIngreso, horaSalida } = estudiante.datosIE[0];
 
@@ -41,7 +40,7 @@ async function processMsg(nuip) {
     const rangoSuperiorSalida = new Date(horaSalidaDate.getTime() + 30 * 60000);
 
     const nuevoRegistro = {
-      fecha: new Date(Date.now() + offset),
+      fecha: moment().format(),
       notificacion: false,
       tipo: "",
       notificacion: false,

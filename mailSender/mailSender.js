@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+const moment = require("moment-timezone");
 const Directivo = require("../models/Directivo.js");
 
 const enviarCorreoNotificacion = async (destinatario, subject, mensaje) => {
@@ -30,12 +31,8 @@ async function notificarEmailRegistrosEstudiante(student, registro) {
   try {
     const { nombre, apellidos, acudientes } = student;
     const { tipo, fecha, usuario, motivo } = registro;
-    const formattedDate = new Date(fecha);
-    formattedDate.setHours(formattedDate.getHours());
-
-    const formattedDateString = `${formattedDate.toLocaleDateString(
-      "es-co"
-    )} a las ${formattedDate.toLocaleTimeString("es-co")}`;
+    const formattedDate = moment(fecha).locale("es-co");
+    const formattedDateString = formattedDate.format("LL [a las] LT");
 
     const ingresoManual = usuario !== "Sistema";
     let usuarioIngreso = usuario;

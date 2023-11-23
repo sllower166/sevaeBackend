@@ -1,4 +1,5 @@
 const Estudiante = require("../models/Estudiante.js");
+const moment = require("moment-timezone");
 const { sendMessageToClients } = require("../websocket/websocket.js");
 
 const crearEstudiante = async (req, res) => {
@@ -163,7 +164,6 @@ const crearCarnetEstudiante = async (req, res) => {
 const accesoManualEstudiante = async (req, res) => {
   try {
     const { estudianteId, tipoAcceso, motivo, usuarioID } = req.body;
-    const offset = -8 * 60 * 60 * 1000;
 
     if (!estudianteId || !tipoAcceso) {
       return res.status(400).json({
@@ -181,7 +181,7 @@ const accesoManualEstudiante = async (req, res) => {
       });
     }
     const nuevoRegistro = {
-      fecha: new Date(Date.now() + offset),
+      fecha: moment().locale("es-co"),
       tipo: tipoAcceso,
       notificacion: false,
       usuario: usuarioID,
