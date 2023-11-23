@@ -11,63 +11,54 @@ async function processMsg(nuip) {
       return;
     }
 
-    const horaActual = moment().locale("es-co");
-
     const { horaIngreso, horaSalida } = estudiante.datosIE[0];
 
-    const horaIngresoDate = new Date();
-    horaIngresoDate.setHours(
-      parseInt(horaIngreso.split(":")[0]),
-      parseInt(horaIngreso.split(":")[1]),
-      0
+    const horaActual = moment().tz("America/Bogota"); // Obtener la hora actual en la zona horaria de Bogotá
+
+    const rangoInferiorIngreso = moment(horaIngreso, "HH:mm").subtract(
+      30,
+      "minutes"
+    );
+    const rangoSuperiorIngreso = moment(horaIngreso, "HH:mm").add(
+      30,
+      "minutes"
     );
 
-    const horaSalidaDate = new Date();
-    horaSalidaDate.setHours(
-      parseInt(horaSalida.split(":")[0]),
-      parseInt(horaSalida.split(":")[1]),
-      0
+    const rangoInferiorSalida = moment(horaSalida, "HH:mm").subtract(
+      30,
+      "minutes"
     );
-
-    const rangoInferiorIngreso = new Date(
-      horaIngresoDate.getTime() - 30 * 60000
-    );
-    const rangoSuperiorIngreso = new Date(
-      horaIngresoDate.getTime() + 30 * 60000
-    );
-
-    const rangoInferiorSalida = new Date(horaSalidaDate.getTime() - 30 * 60000);
-    const rangoSuperiorSalida = new Date(horaSalidaDate.getTime() + 30 * 60000);
+    const rangoSuperiorSalida = moment(horaSalida, "HH:mm").add(30, "minutes");
 
     const nuevoRegistro = {
-      fecha: moment().format(),
-      notificacion: false,
-      tipo: "",
+      fecha: horaActual.format(),
       notificacion: false,
       usuario: usuarioRegistro,
     };
 
     if (
-      horaActual >= rangoInferiorIngreso.getHours() &&
-      horaActual <= rangoSuperiorIngreso.getHours()
+      horaActual.isBetween(
+        rangoInferiorIngreso,
+        rangoSuperiorIngreso,
+        null,
+        "[]"
+      )
     ) {
       nuevoRegistro.tipo = "Ingreso";
-      estudiante.registros.push(nuevoRegistro);
     } else if (
-      horaActual >= rangoInferiorSalida.getHours() &&
-      horaActual <= rangoSuperiorSalida.getHours()
+      horaActual.isBetween(rangoInferiorSalida, rangoSuperiorSalida, null, "[]")
     ) {
       nuevoRegistro.tipo = "Salida";
-      estudiante.registros.push(nuevoRegistro);
     } else {
       nuevoRegistro.tipo = "Fuera de horario";
-      estudiante.registros.push(nuevoRegistro);
     }
 
+    estudiante.registros.push(nuevoRegistro);
     await estudiante.save();
     console.log("Registro exitoso.");
   } catch (error) {
     console.error("Error al procesar el mensaje:", error);
   }
 }
+
 module.exports = { processMsg };

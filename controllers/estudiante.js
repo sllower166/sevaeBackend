@@ -180,8 +180,10 @@ const accesoManualEstudiante = async (req, res) => {
         msg: "Estudiante no encontrado",
       });
     }
+    const fechaActual = moment().tz("America/Bogota"); // Obtener la fecha actual en la zona horaria de Bogotá
+
     const nuevoRegistro = {
-      fecha: moment().locale("es-co"),
+      fecha: fechaActual.toDate(),
       tipo: tipoAcceso,
       notificacion: false,
       usuario: usuarioID,
