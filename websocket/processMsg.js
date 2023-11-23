@@ -12,7 +12,7 @@ async function processMsg(nuip) {
     }
 
     const horaActual = new Date().getHours();
-    const offset = -5 * 60 * 60 * 1000;
+    const offset = -8 * 60 * 60 * 1000;
 
     const { horaIngreso, horaSalida } = estudiante.datosIE[0];
 
