@@ -10,15 +10,58 @@ const { checkJWT } = require("../middleware/check_jwt");
 
 /**
  * @swagger
- * tags:
- *   name: ParametrosIE
- *   description: Gestión de parámetros de la Institución Educativa
+ * /schoolparams:
+ *   get:
+ *     summary: Ver los parámetros de la Institución Educativa.
+ *     tags:
+ *       - Institución Educativa
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Parámetros de la IE obtenidos exitosamente.
+ *       401:
+ *         description: No autorizado.
+ *       500:
+ *         description: Error del servidor.
  */
-
-// Ruta para ver los parámetros de la IE
 router.get("/", [checkJWT], verParametrosIE);
 
-// Ruta para editar los parámetros de la IE
+/**
+ * @swagger
+ * /schoolparams:
+ *   put:
+ *     summary: Editar los parámetros de la Institución Educativa.
+ *     tags:
+ *       - Institución Educativa
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nombreIE:
+ *                 type: string
+ *                 description: Nombre de la Institución Educativa.
+ *               horaIngreso:
+ *                 type: string
+ *                 description: Hora de ingreso.
+ *               horaSalida:
+ *                 type: string
+ *                 description: Hora de salida.
+ *     responses:
+ *       200:
+ *         description: Parámetros de la IE editados exitosamente.
+ *       400:
+ *         description: Nombre de IE, hora de ingreso y hora de salida son requeridos.
+ *       401:
+ *         description: No autorizado.
+ *       500:
+ *         description: Error del servidor.
+ */
 router.put(
   "/",
   [checkJWT],
@@ -31,7 +74,42 @@ router.put(
   editarParametrosIE
 );
 
-// Ruta para establecer los parámetros de la IE
+/**
+ * @swagger
+ * /schoolparams:
+ *   post:
+ *     summary: Establecer los parámetros de la Institución Educativa.
+ *     tags:
+ *       - Institución Educativa
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nombreIE:
+ *                 type: string
+ *                 description: Nombre de la Institución Educativa.
+ *               horaIngreso:
+ *                 type: string
+ *                 description: Hora de ingreso.
+ *               horaSalida:
+ *                 type: string
+ *                 description: Hora de salida.
+ *     responses:
+ *       200:
+ *         description: Parámetros de la IE establecidos exitosamente.
+ *       400:
+ *         description: Nombre de IE, hora de ingreso y hora de salida son requeridos.
+ *       401:
+ *         description: No autorizado.
+ *       500:
+ *         description: Error del servidor.
+ */
+
 router.post(
   "/",
   [checkJWT],

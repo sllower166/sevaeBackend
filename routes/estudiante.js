@@ -170,12 +170,41 @@ router.post("/crear-carnet", [checkJWT], crearCarnetEstudiante);
 
 /**
  * @swagger
- * tags:
- *   name: ManualAccess
- *   description: Acceso manual de estudiantes
+ * /estudiantes/acceso-manual:
+ *   post:
+ *     summary: Acceso manual para un estudiante específico.
+ *     tags:
+ *       - Estudiantes
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               estudianteId:
+ *                 type: string
+ *                 description: ID del estudiante.
+ *               tipoAcceso:
+ *                 type: string
+ *                 description: Tipo de acceso (entrada/salida).
+ *               motivo:
+ *                 type: string
+ *                 description: Motivo del acceso manual (opcional).
+ *               usuarioID:
+ *                 type: string
+ *                 description: ID del usuario que realiza el acceso.
+ *     responses:
+ *       200:
+ *         description: Acceso manual realizado exitosamente.
+ *       400:
+ *         description: ID del estudiante y tipo de acceso son requeridos.
+ *       404:
+ *         description: Estudiante no encontrado.
+ *       500:
+ *         description: Error del servidor.
  */
 
-// Ruta para el acceso manual de estudiantes
 router.post(
   "/ingreso-manual",
   [checkJWT],
