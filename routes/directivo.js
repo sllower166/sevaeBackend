@@ -103,7 +103,7 @@ router.post(
  *         description: Token renovado exitosamente
  *
  */
-router.get("/renew", renewToken);
+router.get("/renew", [checkJWT], renewToken);
 
 /**
  * @swagger
