@@ -55,7 +55,56 @@ const filtrarRegistros = async (fechaInicio, fechaFin, selectedType) => {
     const estudiantes = await Estudiante.aggregate([
       { $unwind: "$registros" },
       { $match: filtro },
-      { $group: { _id: "$_id", registros: { $push: "$registros" } } },
+      {
+        $addFields: {
+          "registros.Nombre": "$nombre",
+          "registros.Apellidos": "$apellidos",
+          "registros.Grado": "$grado",
+          "registros.NUIP": "$NUIP",
+          "registros.usuario": {
+            $cond: [
+              {
+                $eq: ["$registros.usuario", "Sistema"],
+              },
+              "$registros.usuario",
+              {
+                $toObjectId: "$registros.usuario",
+              },
+            ],
+          },
+        },
+      },
+      {
+        $lookup: {
+          from: "directivos",
+          localField: "registros.usuario",
+          foreignField: "_id",
+          as: "directivo",
+        },
+      },
+      {
+        $addFields: {
+          "registros.usuario": {
+            $cond: [
+              {
+                $eq: ["$registros.usuario", "Sistema"],
+              },
+              "$registros.usuario",
+              {
+                $first: "$directivo.nombre",
+              },
+            ],
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id",
+          registros: {
+            $push: "$registros",
+          },
+        },
+      },
     ]);
 
     return estudiantes;
